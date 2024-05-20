@@ -79,7 +79,7 @@ class IMSignInPage extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF434343),
+                        backgroundColor: Color(0xFF434343),
                         minimumSize: Size(500, 50),
                       ),
                       child: Text(

@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:maxmovement/impactmate/im_splashscreen.dart';
-import 'package:maxmovement/impactmate/on_going.dart';
+import 'package:fl_chart/fl_chart.dart'; // Import fl_chart untuk BarChart
+import 'package:maxmovement/impactmate/new_project.dart';
+import 'package:maxmovement/impactmate/projects.dart'; // untuk ProjectPage
 
 class IMHomePage extends StatefulWidget {
   const IMHomePage({Key? key}) : super(key: key);
 
   @override
-  State<IMHomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<IMHomePage> {
   int _selectedIndex = 0;
 
-  // Define _onItemTapped method here
   void _onItemTapped(int index) {
-    if (index == 1) { // Check if Projects button is tapped
-      // Navigate to ProjectsPage
+    if (index == 1) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => OnGoing()),
+        MaterialPageRoute(builder: (context) => ProjectPage()),
       );
     } else {
       setState(() {
@@ -27,64 +26,154 @@ class _HomePageState extends State<IMHomePage> {
     }
   }
 
-  // Helper method implementations
-  Widget _buildIncomeToExpenditureChart() {
-    // Replace with your Income to Expenditure Chart widget
-    return Container(
-      height: 200,
-      color: Colors.blue,
-      child: Center(child: Text('Income to Expenditure Placeholder')),
-    );
-  }
-
-  Widget _buildYourProjectsPieChart() {
-    // Replace with your Your Projects Pie Chart widget
-    return Container(
-      height: 200,
-      color: Colors.red,
-      child: Center(child: Text('Your Projects Placeholder')),
-    );
-  }
-
   Widget _buildFundingProgressGraph() {
-    // Replace with your Funding Progress Graph widget
     return Container(
       height: 200,
-      color: Colors.green,
-      child: Center(child: Text('Funding Progress Placeholder')),
+      child: BarChart(
+        BarChartData(
+          alignment: BarChartAlignment.spaceAround,
+          barTouchData: BarTouchData(
+            enabled: true,
+            touchTooltipData: BarTouchTooltipData(
+              getTooltipColor: (BarChartGroupData group) => Colors.black,
+              tooltipPadding: const EdgeInsets.all(8),
+            ),
+          ),
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                interval: 1,
+                reservedSize: 22,
+                getTitlesWidget: (double value, TitleMeta meta) {
+                  switch (value.toInt()) {
+                    case 0:
+                      return const Text('Mon');
+                    case 1:
+                      return const Text('Tue');
+                    case 2:
+                      return const Text('Wed');
+                    case 3:
+                      return const Text('Thu');
+                    case 4:
+                      return const Text('Fri');
+                    case 5:
+                      return const Text('Sat');
+                    case 6:
+                      return const Text('Sun');
+                    default:
+                      return const Text('');
+                  }
+                },
+              ),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                interval: 5,
+                reservedSize: 32,
+                getTitlesWidget: (double value, TitleMeta meta) {
+                  return Text('${value.toInt()}');
+                },
+              ),
+            ),
+          ),
+          borderData: FlBorderData(
+            show: false,
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildProjectASDGScoreSemiCircleGraph() {
-    // Replace with your Project A SDG Score Semi-Circle Graph widget
-    return Container(
-      height: 200,
-      color: Colors.yellow,
-      child: Center(child: Text('Project A SDG Score Placeholder')),
+  BottomNavigationBarItem _bottomNavigationBarItem(
+    IconData icon,
+    String label,
+    int index,
+  ) {
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      label: label,
     );
   }
 
-  Widget _recentProjects() {
-    return Container(
-      height: 100,
-      color: Colors.purple,
-      child: Center(child: Text('Recent Projects Placeholder')),
-    );
-  }
-
-  Widget _reportTemplate() {
-    return Container(
-      height: 100,
-      color: Colors.orange,
-      child: Center(child: Text('Report Template Placeholder')),
-    );
-  }
-
-  Widget _projectDictionary() {
-    return Container(
-      height: 100,
-      color: Colors.brown,
-      child: Center(child: Text('Project Dictionary Placeholder')),
+  // Method untuk menampilkan menu saat tombol ditekan
+  void _showPopupMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Choose what you want to create',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              Wrap(
+                children: <Widget>[
+                  Material(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFFC893FD),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {
+                        // Navigate to NewProjectPage
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NewProject()),
+                        );
+                        // Navigator.pop(context); // Close the bottom sheet
+                      },
+                      child: Container(
+                        width: 500,
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Icon(Icons.add),
+                            SizedBox(width: 10),
+                            Text('New Project'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 60),
+                  Material(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFFC893FD),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {
+                        // Logic for handling "Report Impact" selection
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                      child: Container(
+                        width: 500,
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Icon(Icons.report),
+                            SizedBox(width: 10),
+                            Text('Report Impact'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -94,55 +183,36 @@ class _HomePageState extends State<IMHomePage> {
       appBar: AppBar(
         title: const Text('MaxMovement'),
       ),
-      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 20),
-            _buildIncomeToExpenditureChart(),
-            SizedBox(height: 20),
-            _buildYourProjectsPieChart(),
-            SizedBox(height: 20),
             _buildFundingProgressGraph(),
             SizedBox(height: 20),
-            _buildProjectASDGScoreSemiCircleGraph(),
-            SizedBox(height: 20),
-            _recentProjects(),
-            SizedBox(height: 20),
-            _reportTemplate(),
-            SizedBox(height: 20),
-            _projectDictionary(),
           ],
         ),
       ),
       bottomNavigationBar: SizedBox(
-        height: 70, // Adjust this height according to your requirement
-        width: MediaQuery.of(context).size.width,
+        height: 70,
         child: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
+          items: [
+            _bottomNavigationBarItem(Icons.home_outlined, 'Home', 0),
+            _bottomNavigationBarItem(Icons.library_books_outlined, 'Projects', 1),
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 35),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.library_books_outlined, size: 35),
-              label: 'Projects',
-            ),
-            BottomNavigationBarItem(
-              icon: Transform.translate(
-                offset: Offset(0, -30),
-                child: Icon(Icons.control_point_outlined, size: 70),
+              icon: GestureDetector(
+                onTap: () {
+                  // Panggil method _showPopupMenu saat tombol ditekan
+                  _showPopupMenu(context);
+                },
+                child: Transform.translate(
+                  offset: Offset(0, -30),
+                  child: Icon(Icons.control_point_outlined, size: 70),
+                ),
               ),
-              label: '', // Center icon button, might need to adjust for better UI/UX
+              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.line_axis, size: 35),
-              label: 'Reports',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.perm_identity, size: 35),
-              label: 'Profile',
-            ),
+            _bottomNavigationBarItem(Icons.line_axis, 'Reports', 2),
+            _bottomNavigationBarItem(Icons.perm_identity, 'Profile', 3),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.black,
@@ -152,4 +222,10 @@ class _HomePageState extends State<IMHomePage> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: IMHomePage(),
+  ));
 }

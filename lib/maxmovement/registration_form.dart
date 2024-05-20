@@ -85,7 +85,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF232E66),
+                  backgroundColor: Color(0xFF232E66),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -139,7 +139,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
         },
         child: Text(title),
         style: ElevatedButton.styleFrom(
-          primary: _expertises.contains(title) ? Color(0xFFFCB042) : Color(0xFFFFE7C3),
+          backgroundColor: _expertises.contains(title) ? Color(0xFFFCB042) : Color(0xFFFFE7C3),
           textStyle: TextStyle(color: Colors.white),
         ),
       ),

@@ -100,8 +100,8 @@ class _CompanyFormState extends State<CompanyForm> {
                     onPressed: () => _saveForm(context),
                     child: Text('Save'),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF434343),
-                      onPrimary: Colors.white,
+                      backgroundColor: Color(0xFF434343),
+                      foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                       textStyle: TextStyle(fontSize: 18),
                     ),
